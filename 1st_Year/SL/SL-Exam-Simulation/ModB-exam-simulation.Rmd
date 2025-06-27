@@ -1,0 +1,227 @@
+---
+title: "Mod-B Exam Simulation"
+subtitle: ""
+output: html_document
+date: "2025-04-18"
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### **The `UScrime` dataset**
+
+Criminologists are interested in the effect of punishment regimes on crime rates. This has been studied using aggregate data on 47 states of the USA for 1960. The data set contains the following columns:
+
+ 	
+- `M` percentage of males aged 14–24 in total state population
+
+- `So` indicator variable for a southern state
+
+- `Ed` mean years of schooling of the population aged 25 years or over
+
+- `Po1` per capita expenditure on police protection in 1960
+
+- `Po2` per capita expenditure on police protection in 1959
+
+- `LF` labour force participation rate of civilian urban males in the age-group 14-24
+
+- `M.F` number of males per 100 females
+
+- `Pop` state population in 1960 in hundred thousands
+
+- `NW` percentage of nonwhites in the population
+
+- `U1` unemployment rate of urban males 14–24
+
+- `U2` unemployment rate of urban males 35–39
+
+- `Wealth` wealth: median value of transferable assets or family income
+
+- `Ineq` income inequality: percentage of families earning below half the median income
+
+- `Prob` probability of imprisonment: ratio of number of commitments to number of offenses
+
+- `Time` average time in months served by offenders in state prisons before their first release
+
+- `Crime` crime rate: number of offenses per 100,000 population in 1960
+
+\
+
+##### 1. **Load the *UScrime* data and provide a summary, a boxplot and a histogram of the response variable `Crime`.**
+
+\
+```{r}
+UScrime <- read.table("uscrime.txt", head=TRUE)
+summary(UScrime)
+boxplot(UScrime$Crime, col="green")
+hist(UScrime$Crime)
+```
+
+
+##### 2. **Fit the linear regression model of `Crime` on all the remaining 15 variables and then remove the variable with largest variance inflation factor, if greater than 10. Repeat this operation iteratively until no variable has variance inflation factor greater than 10.**
+
+```{r}
+library(car)
+
+lm.fit <- lm(Crime~., data=UScrime)
+vif(lm.fit)
+```
+
+```{r}
+lm.fit <- lm(Crime~.-Po2, data=UScrime)
+vif(lm.fit)
+```
+
+```{r}
+lm.fit <- lm(Crime~.-Po2-Wealth, data=UScrime)
+vif(lm.fit)
+```
+
+##### 3. **Fit the resulting linear regression model and name it lm.full. Suggestion: it may be convenient to create a new data frame that contains only the variables involved in this full model.**
+
+```{r}
+UScrime_small <- UScrime
+UScrime_small$Po2 <- NULL
+UScrime_small$Wealth <- NULL
+lm.full <- lm(Crime~., data=UScrime_small)
+summary(lm.full)
+```
+
+##### 4. **Start from the models lm.full and apply a stepwise backward elimination variable selection where at every step you remove a variable on the basis of the p-values of the coefficients. Use 5\% as a threshold. Name the resulting model `lm.reduced`**
+
+```{r}
+lm.reduced <- update(lm.full, .~.-Time)
+summary(lm.reduced)
+```
+
+```{r}
+lm.reduced <- update(lm.reduced, .~.-LF)
+summary(lm.reduced)
+```
+
+```{r}
+lm.reduced <- update(lm.reduced, .~.-So)
+summary(lm.reduced)
+```
+
+```{r}
+lm.reduced <- update(lm.reduced, .~.-NW)
+summary(lm.reduced)
+```
+
+```{r}
+lm.reduced <- update(lm.reduced, .~.-Pop)
+summary(lm.reduced)
+```
+
+```{r}
+lm.reduced <- update(lm.reduced, .~.-M.F)
+summary(lm.reduced)
+```
+
+```{r}
+lm.reduced <- update(lm.reduced, .~.-U1)
+summary(lm.reduced)
+```
+
+##### 5. **Use an F-test to compare the full and the reduced model. State the hypothesis verified by this test discuss the results. Use the RSS values and the degrees of freedom provide by the ANOVA table to compute explicitly the value of the F-statistic and  the associated p-value.**
+
+```{r}
+anova(lm.reduced, lm.full)
+```
+With the anova function we test the null hypothesis that the coefficients of the variables not included in the reduced model are jointly equal to zero, against the alternative hypothesis that at least one is different from 0. Since the P-value is >0.05 we can not reject the null hypothesis.
+
+F.obs = ((RSS_red - RSS_full)/Df_full)/(RSS_full / Res.Df_full)
+
+```{r}
+F.obs <- ((1611057-1426447)/7)/(1426447/33)
+F.obs
+```
+
+```{r}
+p.value <- 1 - pf(F.obs, 7, 33)
+p.value
+```
+
+
+##### 6. **Carry a diagnostic check of the reduced model based on the following 4 plots: a) residuals vs fitted, b) residuals qqplot c) scale-location and d) residuals vs leverage. Provide some comments (it is not required to modify the selected model accordingly).**
+
+```{r}
+par(mfrow=c(2,2))
+plot(lm.reduced)
+```
+-The Residuals vs Fitted shows a non linear pattern for the errors.
+-The Q-Q plot shows that the normality assumption is satisfied.
+-The Scale-Location plot shows that the variance of the fitted values is constant.
+-The Residuals vs Leverage plot does not show the presence of outliers.
+
+##### 7. **Apply the Best Subset Selection method to identify the best models according to Mallows' Cp (i.e. AIC), BIC and adjusted-r.squared. Compare the three selected models with the model previously obtained by the backward elimination method. Only include in the search all (and only) the variables of the above full model.**
+```{r}
+library(leaps)
+regfit.full <- regsubsets(Crime~ ., data = UScrime_small, nvmax = 13)
+reg.summary <- summary(regfit.full)
+```
+
+```{r}
+i <- which.min(reg.summary$cp)
+coef(regfit.full, i)
+```
+
+```{r}
+i <- which.min(reg.summary$bic)
+coef(regfit.full, i)
+```
+
+```{r}
+i <- which.max(reg.summary$adjr2)
+coef(regfit.full, i)
+```
+
+```{r}
+coef(lm.reduced)
+```
+
+##### 8. **Apply the Best Subset Selection method to identify the best models according the Leave One Out Cross Validation, plot the cross validated mean square errors and discuss the result. You can use the `make.formula()` function, give below.**
+
+```{r}
+# response    = character string with the name of the response
+# var.names   = character vector with all the variable names 
+# out.summary = output of summary() when applied to a "regsubset" object
+# idx         = index of the required model
+# resp.trans  = required transformation of the response
+
+make.formula <- function(response, var.names, out.summary, idx, resp.trans =NULL){
+  is.in.selected <- out.summary$which[idx,]
+  pred.names     <- var.names[var.names!=response]
+  predictors     <- pred.names[is.in.selected[-1]]
+  model.f        <- paste(predictors, collapse="+")
+  if(!is.null(resp.trans)) response <- resp.trans
+  model.f        <- paste(response, "~", model.f)
+  return(model.f)
+}
+```
+
+```{r}
+library(boot)
+```
+
+```{r}
+n<-dim(UScrime_small)[1]
+cv.err <- rep(0, length=13)
+for(i in 1:13){
+  mod.formula <- make.formula("Crime", names(UScrime_small), reg.summary, i)
+  lm.fit <- glm(mod.formula, data=UScrime_small)
+  cv.err[i] <- cv.glm(UScrime_small, lm.fit, K=n)$delta[[1]]
+}
+
+plot(cv.err, type="b")
+```
+
+```{r}
+i <- which.min(cv.err)
+i
+```
+

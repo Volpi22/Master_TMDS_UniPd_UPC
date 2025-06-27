@@ -1,0 +1,86 @@
+---
+title: "Assignment n.1"
+subtitle: "Simple linear regression"
+output: html_document
+date: "2025-01-21"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### The *Boston* dataset
+
+The `ISLR2` library contains the `Boston`  data set, which
+records `medv` (median house value) for 506 census tracts in Boston. 
+In this assignment we analyse the relationship between `medv` and `lstat` (percent of households with low socioeconomic status). To find out more about the data set, we can type `?Boston`.     
+
+
+##### 1. **Load the *Boston* data.** 
+
+```{r}
+library(ISLR2)
+data(Boston)
+```
+
+
+##### 2. **Plot the variable `medv` (x-axis) against `lstat` (y-axis) **
+
+```{r}
+plot(Boston$lstat, Boston$medv, xlab="perc. of low socioeconomic status", ylab="median house value")
+```
+
+##### 3. **Compute the *five-numbers-summary* for the variables `medv` and `lstat` **
+
+```{r}
+summary(Boston$medv)
+summary(Boston$lstat)
+```
+
+
+##### 4. **Compute the correlation between `medv` and `lstat` and provide an interpretation of its value**
+
+```{r}
+cor(Boston$lstat, Boston$medv)
+```
+
+From the value of the correlation coefficient we see that there exists a pretty strong negative association between the two variables. However, it is important to notice that the scatterplot shows that the relationship is only approximately linear because the cloud of points presents a slight curvature. 
+
+
+##### 5. **Fit a simple  linear regression model, with `medv` as the response and `lstat` as the predictor and use the function `summary()` to visualize the result.**
+
+```{r}
+lm.fit <- lm(medv ~ lstat, data = Boston)
+summary(lm.fit)
+```
+
+##### 6. **Extract the values of the regression coefficients and provide an interpretation of the slope, that is the coefficient of `lstat`**
+
+```{r}
+coefficients(lm.fit)
+```
+
+The coefficient of `lstat` is negative, meaning that an increase in the proportion of households with low socioeconomic status is associated with a decrease in the median house value. More specifically, such coefficient is significantly different to zero and for a 1% increase in `lstat` it is expected a reduction of 950 dollars in the median house value. 
+
+##### 7. **Compute a 99% confidence interval for the regression coefficients**
+
+```{r}
+confint(lm.fit, level = 0.99)
+```
+
+##### 8. **Plot `medv` and `lstat` along with the least squares regression line**
+
+```{r}
+plot(Boston$lstat, Boston$medv, xlab="perc. of low socioeconomic status", ylab="median house value")
+abline(lm.fit)
+```
+
+##### 9. **Compute the variable `loglstat` as the logarithm of `lstat`, plot `loglstat` against `medv`, fit the regression model with the transformed variable, output the result and add the least square line to the plot**
+
+```{r}
+loglstat <- log(Boston$lstat)
+plot(loglstat, Boston$medv, xlab="log-perc. of low socioeconomic status", ylab="median house value")
+lm.fit2 <- lm(medv ~ loglstat, data = Boston)
+summary(lm.fit2)
+abline(lm.fit2)
+```
