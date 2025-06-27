@@ -8,10 +8,13 @@ Welcome to my GitHub repository documenting my academic journey during my Master
 ## Repository Structure  
 The repository is organized by academic year. Below is a detailed breakdown of the current contents:
 
-### **1st_Year (First Year)**  
+### **1st Year (First Year)**  
 - **Law and Data**: Notes and resources related to the legal and ethical aspects of data science, including data privacy, regulations, and compliance.  
 - **FIS**: Foundations of Information Systems, covering the principles and technologies behind data management and information systems.  
 - **ML**: Machine Learning, focusing on advanced algorithms, techniques, and applications in data science.  
+- **SL**: Statistical Learning, covering the foundations and practical applications of statistical learning methods.  
+- **BDC**: Big Data Computing, focusing on big data algorithms and tools such as PySpark.  
+- **NLP**: Natural Language Processing, covering theoretical concepts, applications, and real-world problems, including hands-on lab work.  
 
 ---
 
