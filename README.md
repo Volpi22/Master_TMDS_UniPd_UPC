@@ -14,7 +14,8 @@ The repository is organized by academic year. Below is a detailed breakdown of t
 - **ML**: Machine Learning, focusing on advanced algorithms, techniques, and applications in data science.  
 - **SL**: Statistical Learning, covering the foundations and practical applications of statistical learning methods.  
 - **BDC**: Big Data Computing, focusing on big data algorithms and tools such as PySpark.  
-- **NLP**: Natural Language Processing, covering theoretical concepts, applications, and real-world problems, including hands-on lab work.  
+- **NLP**: Natural Language Processing, covering theoretical concepts, applications, and real-world problems, including hands-on lab work.
+- **ODS**: Optimization For Data Science, applications and real-word problems, including hands-on lab work.
 
 ---
 
