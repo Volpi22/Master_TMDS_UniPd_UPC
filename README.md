@@ -37,6 +37,7 @@ This repository is designed to be a resource for students, researchers, and prof
 ## Contact  
 If you have any questions, suggestions, or would like to collaborate, feel free to reach out:  
 - **Email**: davide.volpi22@gmail.com
+- **LinkedIn**: www.linkedin.com/in/davide-volpi22
 ---
 
 Thank you for visiting this repository! I hope you find the materials here useful and informative.  
