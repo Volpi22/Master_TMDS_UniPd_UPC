@@ -9,7 +9,7 @@ This repository contains organized notes, projects, and resources from my studie
 ## Repository Structure  
 The repository is organized by academic year. Below is a detailed breakdown of the current contents:
 
-### **1st Year (First Year)**  
+## **1st Year (First Year)**  
 - **Law and Data**: Notes and resources on the legal and ethical aspects of data science, including data privacy, regulations, and compliance.  
 - **FIS**: *Foundations of Information Systems* — principles and technologies behind data management and information systems.  
 - **ML**: *Machine Learning* — advanced algorithms, techniques, and applications in data science.  
@@ -18,7 +18,7 @@ The repository is organized by academic year. Below is a detailed breakdown of t
 - **NLP**: *Natural Language Processing* — theoretical concepts, applications, and hands-on lab work on text and language data.  
 - **ODS**: *Optimization for Data Science* — optimization techniques and their application to real-world data science problems. 
 
-### **2st Year (Second Year)**  
+## **2st Year (Second Year)**  
 - **CSN**: *Complex and Social Networks* — structure, dynamics, and analysis of complex systems and social graphs.  
 - **PODS**: *Process Oriented Data Science* — integration of data science and business processes for optimization and automation.  
 - **AML**: *Advanced Machine Learning* — deep learning, probabilistic models, and generative approaches.  
