@@ -1,5 +1,5 @@
 # Master's Degree in Data Science - TMDS
-**University of Padua**  
+**University of Padua - UPC Barcelona**  
 
 Welcome to my GitHub repository documenting my academic journey during my Double Master's degree in **Data Science** at the University of Padua and the UPC of Barcelona.
 This repository contains organized notes, projects, and resources from my studies. The goal of this repository is to provide a structured and comprehensive overview of the topics covered during my degree, as well as to serve as a reference for others interested in data science and related fields.
